@@ -7,13 +7,27 @@ import TodoItem from "./components/TodoItem";
 function App() {
   const [todos, setTodos] = useState([]);
 
+  // console.log(todos);
+
+  // const allTodos = todos.map((curTodo) => curTodo.todo);
+  // console.log(allTodos)
+
+  // const upper = allTodos.map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
+  // console.log(upper)
+  //? setTodos(upper)  can't directly pass to the upper to the setTodos bcz upper is
+  // ? array of string while setTodos is array of objects.|Means different data structure
+
   // ? .... addTodo functionality
   const addTodo = (todo) => {
+    const capitalizedTodo =
+      todo.todo.charAt(0).toUpperCase() + todo.todo.slice(1).toLowerCase();
+
     setTodos((prev) => [
       ...prev,
       {
         id: Date.now(),
         ...todo,
+        todo: capitalizedTodo, // override with capitalized
       },
     ]);
   };
@@ -41,19 +55,19 @@ function App() {
     );
   };
 
-
   useEffect(() => {
     const todos = JSON.parse(localStorage.getItem("todos"));
 
     if (todos && todos.length > 0) {
       setTodos(todos);
     }
+
+    // console.log(todos)
   }, []);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
-
 
   return (
     <TodoProvider
@@ -66,16 +80,17 @@ function App() {
           </h1>
           <div className="mb-4">
             {/* Todo form goes here */}
-            <TodoForm />
+            <TodoForm todos={todos} />
           </div>
           <div className="flex flex-wrap gap-y-3">
             {/*Loop and Add TodoItem here */}
 
-            {todos.map((todo) => (
-              <div key={todo.id} className="w-full">
-                <TodoItem todo={todo} />
-              </div>
-            ))}
+            {todos &&
+              todos.map((todo) => (
+                <div key={todo.id} className="w-full">
+                  <TodoItem todo={todo} />
+                </div>
+              ))}
           </div>
         </div>
       </div>

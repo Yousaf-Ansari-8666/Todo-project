@@ -1,22 +1,34 @@
 import React, { useState } from "react";
 import { useTodo } from "./contexts/TodoContext";
 
-function TodoForm() {
+function TodoForm({ todos }) {
+  const [todo, setTodo] = useState("");
 
-    const [todo, setTodo] = useState()
-    
-    const {addTodo} = useTodo()
+  const allTodos = todos.map((curTodo) => curTodo.todo);
+  // console.log(allTodos);
+  // const upper = allTodos.map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
+  // console.log(upper) 
+
+  const dulplicate = allTodos.some((value) => value.toLowerCase().trim() === todo.toLowerCase().trim());
+  // console.log(dulplicate)
+
+  const { addTodo } = useTodo();
 
   const add = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if(!todo) return 
-    addTodo({ todo, completed: false})
-    setTodo("")
-  }
+    if (dulplicate) {
+       console.log("dulplicate exists");
+      setTodo("");
+    } else if (!todo) return;
+    else {
+      addTodo({ todo, completed: false });
+      setTodo("");
+    }
+  };
 
   return (
-    <form className="flex" onSubmit={add} >
+    <form className="flex" onSubmit={add}>
       <input
         type="text"
         placeholder="Write Todo..."
