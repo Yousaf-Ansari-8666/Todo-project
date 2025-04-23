@@ -4,10 +4,7 @@ import { useTodo } from "./contexts/TodoContext";
 function TodoForm({ todos }) {
   const [todo, setTodo] = useState("");
 
-  const allTodos = todos.map((curTodo) => curTodo.todo);
-  // console.log(allTodos);
-  // const upper = allTodos.map((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase())
-  // console.log(upper) 
+  const allTodos = todos.map((curTodo) => curTodo.todo); 
 
   const dulplicate = allTodos.some((value) => value.toLowerCase().trim() === todo.toLowerCase().trim());
   // console.log(dulplicate)
